@@ -661,15 +661,13 @@
                     if (btnIcon && btnIcon.classList) btnIcon.className = 'ph-bold ph-spinner animate-spin text-lg';
                     
                     const formData = new FormData(form);
-                    const data = Object.fromEntries(formData.entries());
 
+                    // Enviando como FormData nativo com no-cors para contornar qualquer bloqueio do navegador
                     fetch(webhookURL, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    }).then((response) => {
-                        if (!response.ok && response.type !== 'opaque') throw new Error('Falha na comunicação com o Webhook');
-
+                        mode: 'no-cors',
+                        body: formData
+                    }).then(() => {
                         const currentBtn = document.getElementById('submitBtn');
                         let currentBtnText = null, currentBtnIcon = null;
                         
